@@ -1,0 +1,10 @@
+---
+- hosts: testvol
+  remote_user: pi
+  vars:
+    zhaoxiangjs_dir: /home/pi/sources/zhaoxiangjs
+    zhaoxiangjs_repo: git@github.com:soixantecircuits/zhaoxiangjs.git
+    node_dir: /usr/local/bin
+  tasks:
+    - name: write the watchy config file
+      copy: src=config/watchy-nuwa.json dest=/home/pi/sources/nodejs/soixante/watchy/config/config.json
