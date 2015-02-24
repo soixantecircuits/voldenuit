@@ -1,0 +1,72 @@
+#!/bin/bash
+# chkconfig: 2345 98 02
+#
+# description: Watchy the file watcher
+# processname: watchy
+#
+### BEGIN INIT INFO
+# Provides:          watchy
+# Required-Start: $local_fs $remote_fs
+# Required-Stop: $local_fs $remote_fs
+# Should-Start: $network
+# Should-Stop: $network
+# Default-Start:        2 3 4 5
+# Default-Stop:         0 1 6
+# Short-Description: Watchy init script
+# Description: Watchy the file watcher
+### END INIT INFO
+
+NAME=watchy
+PM2=/usr/local/lib/node_modules/pm2/bin/pm2
+USER=root
+APP_DIR=/home/pi/sources/nodejs/soixante/watchy
+APP_SCRIPT=app.js
+
+export PATH=$PATH:/usr/local/bin
+export PM2_HOME="/root/.pm2"
+
+super() {
+    su - $USER -c "PATH=$PATH; $*"
+}
+
+start() {
+    echo "Starting $NAME"
+    super $PM2 start ${APP_DIR}/${APP_SCRIPT} -x --name $NAME
+}
+
+stop() {
+    super $PM2 stop $NAME
+}
+
+restart() {
+    echo "Restarting $NAME"
+    stop
+    start
+}
+
+status() {
+# TODO: improve, get the status of app, not pm2
+    echo "Status for $NAME:"
+    super $PM2 list
+    RETVAL=$?
+}
+
+case "$1" in
+    start)
+        start
+        ;;
+    stop)
+        stop
+        ;;
+    status)
+        status
+        ;;
+    restart)
+        restart
+        ;;
+    *)
+        echo "Usage: {start|stop|status|restart}"
+        exit 1
+        ;;
+esac
+exit $RETVAL
