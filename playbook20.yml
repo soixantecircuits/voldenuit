@@ -7,18 +7,44 @@
     watchy_dir: /home/pi/sources/nodejs/soixante/watchy
     node_dir: /usr/local/bin
   tasks:
+    - cron: name="mjpg streamer" special_time=reboot job="mkdir -p /tmp/stream; /usr/local/bin/mjpg_streamer -i \"/usr/local/lib/input_file.so -r -f /tmp/stream\" -o     \"/usr/local/lib/output_http.so -w /usr/local/www -p 8080\"" state=absent
     - cron: name="mjpg streamer" special_time=reboot job="mkdir -p /tmp/stream; /usr/local/bin/mjpg_streamer -i \"/usr/local/lib/input_file.so -r -f /tmp/stream\" -o     \"/usr/local/lib/output_http.so -w /usr/local/www -p 8080\""
-    - cron: name="zhaoxiangjs" special_time=reboot job="{{node_dir}}/node {{zhaoxiangjs_dir}}/app.js"
-    - cron: name="watchy" special_time=reboot job="{{node_dir}}/node {{watchy_dir}}/app.js"
+      sudo: yes
+    - cron: name="zhaoxiangjs" special_time=reboot job="{{node_dir}}/node {{zhaoxiangjs_dir}}/app.js" state=absent
+    - cron: name="watchy" special_time=reboot job="{{node_dir}}/node {{watchy_dir}}/app.js" state=absent
     - cron: name="slack message at restart" special_time=reboot job="sleep 30;curl -X POST --data-urlencode 'payload={\"channel\":\"#avengers\", \"username\":\"voldenuit\", \"text\":\"{{ inventory_hostname }} just restarted\", \"icon_emoji\":\":ghost:\"}' https://hooks.slack.com/services/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"
     - git: repo={{zhaoxiangjs_repo}} dest={{zhaoxiangjs_dir}} version=HEAD
-    #- name: install dependencies
-    #  command: "{{node_dir}}/npm install chdir={{zhaoxiangjs_dir}}"
+      notify:
+        - install dependencies
+        - restart zhaoxiangjs
     - name: write the watchy config file
       copy: src=config/watchy-nuwa.json dest=/home/pi/sources/nodejs/soixante/watchy/config/config.json
-    - name: Send notification message via Slack
-      local_action:
-        module: slack
-        domain: soixantecircuits.slack.com
-        token: T024FC8Q2/B03NQRGN4/EYTTRDhh71oXBGr0gH4are3z
-        msg: "{{ inventory_hostname }} updated"
+    - name: install pm2
+      npm: name=pm2 global=yes
+      sudo: yes
+    - name: write the watchy init script file
+      copy: src=config/watchy dest=/etc/init.d/ mode="a+x"
+      sudo: yes
+    - name: enable watchy as a service
+      service: name=watchy enabled=yes
+      sudo: yes
+    - name: write the zhaoxiangjs init script file
+      copy: src=config/zhaoxiangjs dest=/etc/init.d/ mode="a+x"
+      sudo: yes
+    - name: enable zhaoxiangjs as a service
+      service: name=zhaoxiangjs enabled=yes
+      sudo: yes
+    #- name: Send notification message via Slack
+    #  local_action:
+    #    module: slack
+    #    domain: soixantecircuits.slack.com
+    #    token: T024FC8Q2/B03NQRGN4/EYTTRDhh71oXBGr0gH4are3z
+    #    msg: "{{ inventory_hostname }} updated"
+  handlers:
+    - name: install dependencies
+      #npm: path={{zhaoxiangjs_dir}}
+      command: "{{node_dir}}/npm install chdir={{zhaoxiangjs_dir}}"
+    - name: restart zhaoxiangjs
+      service: name=zhaoxiangjs state=restarted
+      sudo: yes
+

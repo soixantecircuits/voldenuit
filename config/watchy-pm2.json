@@ -1,0 +1,11 @@
+{
+  "apps": [
+    {
+      "name": "watchy",
+      "script": "/home/pi/sources/nodejs/soixante/watchy/app.js",
+      "log_date_format": "YYYY-MM-DD HH:mm:ss Z",
+      "exec_mode": "fork_mode",
+      "max_restarts": 0
+    }
+  ]
+}

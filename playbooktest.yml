@@ -1,22 +1,16 @@
 ---
-- hosts: testvol
+- hosts: voldenuit
   remote_user: pi
   vars:
     zhaoxiangjs_dir: /home/pi/sources/zhaoxiangjs
     zhaoxiangjs_repo: git@github.com:soixantecircuits/zhaoxiangjs.git
-    watchy_dir: /home/pi/sources/nodejs/soixante/watchy
+    watchy_dir: /home/pi/sources/watchy
+    watchy_repo: git@github.com:soixantecircuits/watchy.git
     node_dir: /usr/local/bin
   tasks:
-    - name: install pm2
-      npm: name=pm2 global=yes
-      sudo: yes
-    - name: write the zhaoxiangjs init script file
-      copy: src=config/zhaoxiangjs dest=/etc/init.d/ mode="a+x"
-      sudo: yes
-    - name: enable zhaoxiang as a service
-      service: name=zhaoxiangjs enabled=yes state=started
-      sudo: yes
-    - cron: name="mjpg streamer" special_time=reboot job="mkdir -p /tmp/stream; /usr/local/bin/mjpg_streamer -i \"/usr/local/lib/input_file.so -r -f /tmp/stream\" -o     \"/usr/local/lib/output_http.so -w /usr/local/www -p 8080\"" state=absent
     - cron: name="mjpg streamer" special_time=reboot job="mkdir -p /tmp/stream; /usr/local/bin/mjpg_streamer -i \"/usr/local/lib/input_file.so -r -f /tmp/stream\" -o     \"/usr/local/lib/output_http.so -w /usr/local/www -p 8080\""
+    - cron: name="mjpg streamer" special_time=reboot job="mkdir -p /tmp/stream; /usr/local/bin/mjpg_streamer -i \"/usr/local/lib/input_file.so -r -f /tmp/stream\" -o     \"/usr/local/lib/output_http.so -w /usr/local/www -p 8080\"" state=absent
       sudo: yes
-
+    - name: reboot
+      command: "reboot"
+      sudo: yes

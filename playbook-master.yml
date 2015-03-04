@@ -1,0 +1,73 @@
+---
+- hosts: 58-63voldenuit
+  remote_user: pi
+  vars:
+    zhaoxiangjs_dir: /home/pi/sources/zhaoxiangjs
+    zhaoxiangjs_repo: git@github.com:soixantecircuits/zhaoxiangjs.git
+    watchy_dir: /home/pi/sources/watchy
+    watchy_repo: git@github.com:soixantecircuits/watchy.git
+    node_dir: /usr/local/bin
+  tasks:
+    - cron: name="mjpg streamer" special_time=reboot job="mkdir -p /tmp/stream; /usr/local/bin/mjpg_streamer -i \"/usr/local/lib/input_file.so -r -f /tmp/stream\" -o     \"/usr/local/lib/output_http.so -w /usr/local/www -p 8080\"" 
+    - cron: name="mjpg streamer" special_time=reboot job="mkdir -p /tmp/stream; /usr/local/bin/mjpg_streamer -i \"/usr/local/lib/input_file.so -r -f /tmp/stream\" -o     \"/usr/local/lib/output_http.so -w /usr/local/www -p 8080\"" state=absent
+      sudo: yes
+    - cron: name="zhaoxiangjs" special_time=reboot job="{{node_dir}}/node {{zhaoxiangjs_dir}}/app.js" state=absent
+    - cron: name="watchy" special_time=reboot job="{{node_dir}}/node {{watchy_dir}}/app.js" state=absent
+    - cron: name="slack message at restart" special_time=reboot job="sleep 30;curl -X POST --data-urlencode 'payload={\"channel\":\"#avengers\", \"username\":\"voldenuit\", \"text\":\"{{ inventory_hostname }} just restarted\", \"icon_emoji\":\":ghost:\"}' https://hooks.slack.com/services/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"
+    - git: repo={{zhaoxiangjs_repo}} dest={{zhaoxiangjs_dir}} version=HEAD
+      notify:
+        #- install dependencies
+        - restart zhaoxiangjs
+    - name: sync the watchy folder 
+      synchronize: src=watchy dest=/home/pi/sources
+    - name: write the watchy config file
+      copy: src=config/watchy-nuwa.json dest=/home/pi/sources/nodejs/soixante/watchy/config/config.json
+      notify:
+        - restart watchy
+    - name: install pm2
+      npm: name=pm2 global=yes
+      sudo: yes
+    - name: stop zhaoxiangjs service
+      service: name=zhaoxiangjs  state=stopped
+      sudo: yes
+      ignore_errors: yes
+    - name: stop watchy as a service
+      service: name=watchy  state=stopped
+      sudo: yes
+      ignore_errors: yes
+    - name: disable zhaoxiangjs as a service
+      service: name=zhaoxiangjs enabled=no 
+      sudo: yes
+      ignore_errors: yes
+    - name: disable watchy as a service
+      service: name=watchy enabled=no
+      sudo: yes
+      ignore_errors: yes
+    - name: configure pm2 to restart on startup
+      shell: env PATH=$PATH:/usr/local/bin pm2 startup raspberry -u pi
+      sudo: yes
+      sudo_user: root
+    - name: setup watchy in pm2  
+      shell: pm2 start {{watchy_dir}}/app.js --name "watchy" --log-date-format "YYYY-MM-DD HH:mm Z"
+      ignore_errors: yes
+    - name: setup zhaoxiangjs in pm2  
+      shell: pm2 start {{zhaoxiangjs_dir}}/app.js --name "zhaoxiangjs" --log-date-format "YYYY-MM-DD HH:mm Z"
+      ignore_errors: yes
+    - name: save pm2 status
+      shell: pm2 save
+    #- name: Send notification message via Slack
+    #  local_action:
+    #    module: slack
+    #    domain: soixantecircuits.slack.com
+    #    token: T024FC8Q2/B03NQRGN4/EYTTRDhh71oXBGr0gH4are3z
+    #    msg: "{{ inventory_hostname }} updated"
+  handlers:
+    - name: install dependencies
+# TODO: stop pm2 when installing dependencies
+      npm: path={{zhaoxiangjs_dir}}
+      #command: "{{node_dir}}/npm install chdir={{zhaoxiangjs_dir}}"
+    - name: restart zhaoxiangjs
+      shell: pm2 restart zhaoxiangjs
+    - name: restart watchy
+      shell: pm2 restart watchy
+

@@ -1,0 +1,17 @@
+---
+- hosts: voldenuit
+  remote_user: pi
+  vars:
+    zhaoxiangjs_dir: /home/pi/sources/zhaoxiangjs
+    zhaoxiangjs_repo: git@github.com:soixantecircuits/zhaoxiangjs.git
+    watchy_dir: /home/pi/sources/watchy
+    watchy_repo: git@github.com:soixantecircuits/watchy.git
+    node_dir: /usr/local/bin
+  tasks:
+    - git: repo={{zhaoxiangjs_repo}} dest={{zhaoxiangjs_dir}} version=HEAD
+      notify:
+        #- install dependencies
+        - restart zhaoxiangjs
+  handlers:
+    - name: restart zhaoxiangjs
+      shell: pm2 restart zhaoxiangjs

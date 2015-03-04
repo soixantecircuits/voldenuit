@@ -1,0 +1,6 @@
+---
+- hosts: 25-64voldenuit
+  remote_user: pi
+  tasks:
+    - name: restart watchy
+      shell: pm2 restart watchy

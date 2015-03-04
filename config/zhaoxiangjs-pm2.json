@@ -1,0 +1,11 @@
+{
+  "apps": [
+    {
+      "name": "zhaoxiangjs",
+      "script": "/home/pi/sources/zhaoxiangjs/app.js",
+      "log_date_format": "YYYY-MM-DD HH:mm:ss Z",
+      "exec_mode": "fork_mode",
+      "max_restarts": 0
+    }
+  ]
+}
