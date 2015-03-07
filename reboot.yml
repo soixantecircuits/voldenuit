@@ -1,11 +1,7 @@
 ---
 - hosts: voldenuit
   remote_user: pi
-  vars:
-    zhaoxiangjs_dir: /home/pi/sources/zhaoxiangjs
-    zhaoxiangjs_repo: git@github.com:soixantecircuits/zhaoxiangjs.git
-    watchy_dir: /home/pi/sources/nodejs/soixante/watchy
-    node_dir: /usr/local/bin
+  gather_facts: no
   tasks:
     - name: reboot
       command: "reboot"

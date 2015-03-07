@@ -43,7 +43,7 @@
   },
   "share":{
       "dropbox":{
-        "path":"/home/mina/dropbox",
+        "path":"/home/mina/Dropbox/medias",
         "filename":"data.json"
       }
   },
