@@ -1,0 +1,59 @@
+{
+  "apps": [
+    {
+      "name": "panini",
+      "script": "./.demeteorized/main.js",
+      "cwd": "/home/mina/sources/nodejs/soixante/panini",
+      "comment": "settings args below is not working",
+      "args": ["--settings", "/home/mina/sources/nodejs/soixante/panini/settings.json"],
+      "log_date_format": "YYYY-MM-DD HH:mm:ss Z",
+      "exec_mode": "fork_mode",
+      "max_restarts": 0,
+      "env": {
+        "PORT": 3000,
+        "MONGO_URL": "mongodb://meteor:meteorpwd@localhost:27017/meteor",
+        "ROOT_URL": "https://chat.local",
+        "METEOR_SETTINGS":
+{
+  "service":{
+    "name":"panini",
+    "port": 8011
+  },
+  "socket": {
+    "port": 8011,
+    "maxListeners": 20
+  },
+  "osc": {
+    "port": 5555
+  },
+  "anonymous": true,
+  "mail":{
+    "title":"360 selfie"
+  },
+  "QRcode": false,
+  "mailer": {
+    "host": "headoo.net",
+    "port": 587,
+    "auth": {
+      "user": "headoouk10@headoo.net",
+      "pass": "headoo2015"
+    },
+    "ignoreTLS": true,
+    "autosend": false
+  },
+  "share":{
+      "dropbox":{
+        "path":"/home/mina/dropbox",
+        "filename":"data.json"
+      }
+  },
+  "video":{
+    "watermark": false,
+    "previewtime":1
+  },
+  "shouldQueue":false
+}
+      }
+    }
+  ]
+}
