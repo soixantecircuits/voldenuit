@@ -14,6 +14,10 @@
     - cron: name="zhaoxiangjs" special_time=reboot job="{{node_dir}}/node {{zhaoxiangjs_dir}}/app.js" state=absent
     - cron: name="watchy" special_time=reboot job="{{node_dir}}/node {{watchy_dir}}/app.js" state=absent
     - cron: name="slack message at restart" special_time=reboot job="sleep 30;curl -X POST --data-urlencode 'payload={\"channel\":\"#avengers\", \"username\":\"voldenuit\", \"text\":\"{{ inventory_hostname }} just restarted\", \"icon_emoji\":\":ghost:\"}' https://hooks.slack.com/services/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"
+    - name: "cronjob to clean old snaps hourly"
+      cron: name="clean old snaps" minute="12" job="/usr/bin/find /tmp/snaps -mmin +59 -and -not -type d -delete"
+    - name: "cronjob to clean old stream hourly (mjpg_streamer should delete them already)"
+      cron: name="clean old snaps" minute="42" job="/usr/bin/find /tmp/stream -mmin +59 -and -not -type d -delete"
     - git: repo={{zhaoxiangjs_repo}} dest={{zhaoxiangjs_dir}} version=HEAD
       notify:
         #- install dependencies

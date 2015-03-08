@@ -8,9 +8,7 @@
     watchy_repo: git@github.com:soixantecircuits/watchy.git
     node_dir: /usr/local/bin
   tasks:
-    - cron: name="mjpg streamer" special_time=reboot job="mkdir -p /tmp/stream; /usr/local/bin/mjpg_streamer -i \"/usr/local/lib/input_file.so -r -f /tmp/stream\" -o     \"/usr/local/lib/output_http.so -w /usr/local/www -p 8080\""
-    - cron: name="mjpg streamer" special_time=reboot job="mkdir -p /tmp/stream; /usr/local/bin/mjpg_streamer -i \"/usr/local/lib/input_file.so -r -f /tmp/stream\" -o     \"/usr/local/lib/output_http.so -w /usr/local/www -p 8080\"" state=absent
-      sudo: yes
-    - name: reboot
-      command: "reboot"
-      sudo: yes
+    - name: "cronjob to clean old snaps hourly"
+      cron: name="clean old snaps" minute="12" job="/usr/bin/find /tmp/snaps -mmin +59 -and -not -type d -delete"
+    - name: "cronjob to clean old stream hourly (mjpg_streamer should delete them already)"
+      cron: name="clean old snaps" minute="42" job="/usr/bin/find /tmp/stream -mmin +59 -and -not -type d -delete"
