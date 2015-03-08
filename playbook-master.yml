@@ -17,7 +17,7 @@
     - name: "cronjob to clean old snaps hourly"
       cron: name="clean old snaps" minute="12" job="/usr/bin/find /tmp/snaps -mmin +59 -and -not -type d -delete"
     - name: "cronjob to clean old stream hourly (mjpg_streamer should delete them already)"
-      cron: name="clean old snaps" minute="42" job="/usr/bin/find /tmp/stream -mmin +59 -and -not -type d -delete"
+      cron: name="clean old stream" minute="42" job="/usr/bin/find /tmp/stream -mmin +59 -and -not -type d -delete"
     - git: repo={{zhaoxiangjs_repo}} dest={{zhaoxiangjs_dir}} version=HEAD
       notify:
         #- install dependencies
