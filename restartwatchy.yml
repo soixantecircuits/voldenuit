@@ -1,5 +1,5 @@
 ---
-- hosts: 25-64voldenuit
+- hosts: voldenuit
   remote_user: pi
   tasks:
     - name: restart watchy

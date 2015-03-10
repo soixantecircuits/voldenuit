@@ -1,7 +1,7 @@
 Ansible playbooks for voldenuit
 
 # Usefull commands
-`ansible-playbook playbook-master.yml`
+`ansible-playbook playbook-voldenuit.yml`
 `ansible 4voldenuit -a "echo ok" -u pi`
 `ansible 4voldenuit -a "sudo reboot" -u pi --sudo`
 `ansible voldenuit01.local -m service -a "name=watchy state=restarted" -u pi --sudo`

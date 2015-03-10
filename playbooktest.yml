@@ -1,5 +1,5 @@
 ---
-- hosts: voldenuit
+- hosts: testvol
   remote_user: pi
   vars:
     zhaoxiangjs_dir: /home/pi/sources/zhaoxiangjs
@@ -8,9 +8,11 @@
     watchy_repo: git@github.com:soixantecircuits/watchy.git
     node_dir: /usr/local/bin
   tasks:
-    - cron: name="mjpg streamer" special_time=reboot job="mkdir -p /tmp/stream; /usr/local/bin/mjpg_streamer -i \"/usr/local/lib/input_file.so -r -f /tmp/stream\" -o     \"/usr/local/lib/output_http.so -w /usr/local/www -p 8080\""
-    - cron: name="mjpg streamer" special_time=reboot job="mkdir -p /tmp/stream; /usr/local/bin/mjpg_streamer -i \"/usr/local/lib/input_file.so -r -f /tmp/stream\" -o     \"/usr/local/lib/output_http.so -w /usr/local/www -p 8080\"" state=absent
-      sudo: yes
-    - name: reboot
-      command: "reboot"
-      sudo: yes
+    - name: setup watchy in pm2  
+      shell: pm2 start {{watchy_dir}}/app.js --name "watchy" --log-date-format "YYYY-MM-DD HH:mm Z"
+      ignore_errors: yes
+    - name: setup zhaoxiangjs in pm2  
+      shell: pm2 start {{zhaoxiangjs_dir}}/app.js --name "zhaoxiangjs" --log-date-format "YYYY-MM-DD HH:mm Z"
+      ignore_errors: yes
+    - name: save pm2 status
+      shell: pm2 save
