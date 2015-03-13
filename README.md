@@ -117,7 +117,7 @@ vim /home/mina/sources/nodejs/soixante/watchy/config/config.json
 ```
 Run in pm2
 ```
-pm2 start /home/mina/sources/nodejs/soixante/watchy/app.js --name "watchy" --log-date-format "YYYY-MM-DD HH:mm Z"
+pm2 start /home/mina/sources/nodejs/soixante/watchy/app.js --name "watchy" --log-date-format "YYYY-MM-DD HH:mm:ss Z"
 ```
 
 Check it is a running with no issues`
@@ -132,7 +132,7 @@ vim /home/mina/sources/nodejs/soixante/web-recorder/config/config.json
 Run in pm2
 ```
 cd /home/mina/sources/nodejs/soixante/web-recorder/
-pm2 start /home/mina/sources/nodejs/soixante/web-recorder/app.js --name "web-recorder" --log-date-format "YYYY-MM-DD HH:mm Z"
+pm2 start /home/mina/sources/nodejs/soixante/web-recorder/app.js --name "web-recorder" --log-date-format "YYYY-MM-DD HH:mm:ss Z"
 ```
 
 Check it is a running with no issues`
@@ -147,7 +147,7 @@ vim /home/mina/sources/nodejs/soixante/the-socialite/config/config.json
 Run in pm2
 ```
 cd /home/mina/sources/nodejs/soixante/the-socialite/
-pm2 start /home/mina/sources/nodejs/soixante/the-socialite/serve.js --name "socialite" --log-date-format "YYYY-MM-DD HH:mm Z"
+pm2 start /home/mina/sources/nodejs/soixante/the-socialite/serve.js --name "socialite" --log-date-format "YYYY-MM-DD HH:mm:ss Z"
 ```
 
 Check it is a running with no issues`
@@ -162,7 +162,7 @@ vim /home/mina/sources/nodejs/soixante/lucca/config/config.json
 Run in pm2
 ```
 cd /home/mina/sources/nodejs/soixante/lucca/
-pm2 start /home/mina/sources/nodejs/soixante/lucca/serve.js --name "lucca" --log-date-format "YYYY-MM-DD HH:mm Z"
+pm2 start /home/mina/sources/nodejs/soixante/lucca/serve.js --name "lucca" --log-date-format "YYYY-MM-DD HH:mm:ss Z"
 ```
 
 Check it is a running with no issues`
@@ -191,7 +191,7 @@ vim /home/mina/sources/nodejs/soixante/fechty/server/config/config.json
 Run in pm2
 ```
 cd /home/mina/sources/nodejs/soixante/fechty/server
-pm2 start /home/mina/sources/nodejs/soixante/fechty/server/app.js --name "fechty-server" --log-date-format "YYYY-MM-DD HH:mm Z"
+pm2 start /home/mina/sources/nodejs/soixante/fechty/server/app.js --name "fechty-server" --log-date-format "YYYY-MM-DD HH:mm:ss Z"
 ```
 
 Check it is a running with no issues`
@@ -202,7 +202,7 @@ Check it is a running with no issues`
 Run in pm2
 ```
 cd /home/mina/sources/nodejs/soixante/fechty/www
-pm2 start /home/mina/sources/nodejs/soixante/fechty/serve.js --name "fechty-client" --log-date-format "YYYY-MM-DD HH:mm Z"
+pm2 start /home/mina/sources/nodejs/soixante/fechty/serve.js --name "fechty-client" --log-date-format "YYYY-MM-DD HH:mm:ss Z"
 ```
 
 Check it is a running with no issues`
