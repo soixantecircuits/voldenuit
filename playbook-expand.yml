@@ -1,0 +1,12 @@
+
+---
+- hosts: voldenuit
+  remote_user: pi
+  tasks:
+    - name: expand
+      shell: raspi-config --expand-rootfs
+      sudo: yes
+    - name: reboot
+      shell: reboot
+      sudo: yes
+

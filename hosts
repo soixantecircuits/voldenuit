@@ -8,7 +8,7 @@ voldenuit03.local
 voldenuit04.local
 
 [testvol]
-voldenuit63.local
+voldenuit[201:202].local
 
 [20voldenuit]
 voldenuit[05:24].local
@@ -30,3 +30,5 @@ voldenuit[58:63].local
 
 [chat]
 chat.local
+[voldenuit101-104]
+voldenuit[101:104].local

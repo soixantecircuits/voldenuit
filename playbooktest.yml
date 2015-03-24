@@ -8,11 +8,4 @@
     watchy_repo: git@github.com:soixantecircuits/watchy.git
     node_dir: /usr/local/bin
   tasks:
-    - name: setup watchy in pm2  
-      shell: pm2 start {{watchy_dir}}/app.js --name "watchy" --log-date-format "YYYY-MM-DD HH:mm Z"
-      ignore_errors: yes
-    - name: setup zhaoxiangjs in pm2  
-      shell: pm2 start {{zhaoxiangjs_dir}}/app.js --name "zhaoxiangjs" --log-date-format "YYYY-MM-DD HH:mm Z"
-      ignore_errors: yes
-    - name: save pm2 status
-      shell: pm2 save
+    - cron: name="slack message at restart" special_time=reboot job="sleep 30;HOSTNAME=$(cat /etc/hostname);curl -X POST --data-urlencode 'payload={\"channel\":\"#avengers\", \"username\":\"voldenuit\", \"text\":\"'$HOSTNAME' just restarted\", \"icon_emoji\":\":ghost:\"}' https://hooks.slack.com/services/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"

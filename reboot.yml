@@ -1,6 +1,7 @@
 ---
-- hosts: voldenuit
+- hosts: testvol
   remote_user: pi
+  gather_facts: no
   tasks:
     - name: reboot
       command: "reboot"

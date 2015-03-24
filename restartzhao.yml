@@ -1,0 +1,7 @@
+---
+- hosts: voldenuit
+  gather_facts: no
+  remote_user: pi
+  tasks:
+    - name: restart zhao
+      shell: pm2 restart zhaoxiangjs
