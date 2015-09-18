@@ -210,7 +210,16 @@ Check it is a running with no issues`
 `pm2 logs`
 
 ## Set pm2 to restart at startup
+
+On ubuntu 14:
 ```
 pm2 save
 sudo env PATH=$PATH:/usr/bin pm2 startup linux -u mina
 ```
+
+On ubuntu 15:
+```
+pm2 save
+sudo env PATH=$PATH:/usr/bin pm2 startup systemd -u mina
+```
+
